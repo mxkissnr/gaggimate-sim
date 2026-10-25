@@ -36,16 +36,15 @@ LABEL org.opencontainers.image.title="gaggimate-sim" \
       gaggimate.ref="${GAGGIMATE_REF}"
 
 RUN apt-get update \
- && apt-get install -y --no-install-recommends libsdl2-2.0-0 xvfb xauth \
+ && apt-get install -y --no-install-recommends libsdl2-2.0-0 xvfb xauth socat \
  && rm -rf /var/lib/apt/lists/*
 
 COPY --from=build /src/.pio/build/display-sim/program /app/gaggimate-sim
 
 # The simulator persists state in ./sim_data relative to its working directory.
-RUN mkdir /sim_data \
- && ln -s /sim_data /app/sim_data \
- && printf '#!/bin/sh\nXvfb :99 -screen 0 1024x768x24 &\nsleep 1\nexport DISPLAY=:99\nexec /app/gaggimate-sim\n' > /app/start.sh \
- && chmod +x /app/start.sh
+RUN mkdir /sim_data && ln -s /sim_data /app/sim_data
+
+COPY --chmod=755 start.sh /app/start.sh
 
 WORKDIR /app
 VOLUME /sim_data
