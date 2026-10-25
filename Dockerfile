@@ -17,7 +17,9 @@ RUN git clone --depth 1 --branch "${GAGGIMATE_REF}" https://github.com/jniebuhr/
 WORKDIR /src
 # Upstream relies on a transitive <stdexcept> include that GCC 12 does not provide.
 ENV PLATFORMIO_BUILD_FLAGS="-include stdexcept"
-RUN scripts/build_webui.sh && pio run -e display-sim
+# display-sim does not run the version script of the firmware envs, so write src/version.h here.
+RUN printf '#pragma once\n#define BUILD_GIT_VERSION "%s"\n#define BUILD_TIMESTAMP "%s"\n' "${GAGGIMATE_REF}" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > src/version.h \
+ && scripts/build_webui.sh && pio run -e display-sim
 
 
 FROM debian:bookworm-slim@sha256:7ff6ba31527b9e336162fa061746c366c4b2032f4d2cff2078bea43f78efe3f8
