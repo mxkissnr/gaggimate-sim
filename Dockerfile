@@ -17,7 +17,7 @@ RUN git clone --depth 1 --branch "${GAGGIMATE_REF}" https://github.com/jniebuhr/
 WORKDIR /src
 # Upstream is developed on macOS/clang and relies on transitive standard headers that
 # GCC 12 does not provide; force-include them for C++ translation units.
-RUN printf '#ifdef __cplusplus\n#include <stdexcept>\n#include <cstdarg>\n#include <cstdint>\n#include <cstdio>\n#include <cstdlib>\n#include <cstring>\n#include <algorithm>\n#include <string>\n#endif\n' > /opt/compat.h
+RUN printf '#ifdef __cplusplus\n#include <stdexcept>\n#include <cstdarg>\n#include <cstdint>\n#include <cstdio>\n#include <cstdlib>\n#include <cstring>\n#include <algorithm>\n#include <string>\n#include <memory>\n#include <vector>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <functional>\n#include <cmath>\n#include <optional>\n#include <sstream>\n#include <cstddef>\n#include <climits>\n#include <array>\n#include <utility>\n#include <deque>\n#include <mutex>\n#include <chrono>\n#endif\n' > /opt/compat.h
 ENV PLATFORMIO_BUILD_FLAGS="-include /opt/compat.h"
 # display-sim does not run the version script of the firmware envs, so write src/version.h here.
 RUN printf '#pragma once\n#define BUILD_GIT_VERSION "%s"\n#define BUILD_TIMESTAMP "%s"\n' "${GAGGIMATE_REF}" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > src/version.h \
