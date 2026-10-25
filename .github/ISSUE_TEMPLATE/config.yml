@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: GaggiMate firmware or simulator behaviour
+    url: https://github.com/jniebuhr/gaggimate/issues
+    about: Questions or bugs in the GaggiMate firmware, display UI or simulator itself belong upstream, not in this image repository.
+  - name: Report a security vulnerability
+    url: https://github.com/mxkissnr/gaggimate-sim/security/advisories/new
+    about: Please use a private security advisory instead of a public issue.
