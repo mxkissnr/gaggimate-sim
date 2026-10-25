@@ -45,7 +45,8 @@ The last argument is the render delay in milliseconds.
 
 Each tag matches an upstream GaggiMate release tag (for example `v1.9.0`);
 `latest` points to the newest release. The tag is also stored in the
-`gaggimate.ref` image label.
+`gaggimate.ref` image label. Each upstream release also gets a
+GitHub release in this repository.
 
 ## Rebuilds
 

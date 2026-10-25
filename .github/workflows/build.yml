@@ -26,6 +26,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     timeout-minutes: 60
+    outputs:
+      ref: ${{ steps.ref.outputs.ref }}
+      digest: ${{ steps.push.outputs.digest }}
     permissions:
       contents: read
       packages: write
@@ -96,6 +99,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Push
+        id: push
         if: github.event_name != 'pull_request'
         uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
         with:
@@ -107,3 +111,37 @@ jobs:
             ${{ env.IMAGE }}:latest
           build-args: GAGGIMATE_REF=${{ steps.ref.outputs.ref }}
           cache-from: type=gha
+
+  release:
+    needs: build
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Create GitHub release for new upstream tag
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ needs.build.outputs.ref }}
+          DIGEST: ${{ needs.build.outputs.digest }}
+          SHA: ${{ github.sha }}
+        run: |
+          if gh release view "$TAG" --repo "$GITHUB_REPOSITORY" > /dev/null 2>&1; then
+            echo "Release $TAG already exists, nothing to do."
+            exit 0
+          fi
+          {
+            echo "Container image of the GaggiMate desktop simulator built from upstream \`$TAG\`."
+            echo
+            echo '```shell'
+            echo "docker pull ghcr.io/mxkissnr/gaggimate-sim:$TAG"
+            echo '```'
+            echo
+            echo "Image digest: \`$DIGEST\`"
+            echo
+            echo "Upstream release: https://github.com/jniebuhr/gaggimate/releases/tag/$TAG"
+            echo
+            echo "Licence: the image is CC BY-NC-SA 4.0, non-commercial use only."
+          } > notes.md
+          gh release create "$TAG" --repo "$GITHUB_REPOSITORY" --target "$SHA" \
+            --title "GaggiMate simulator $TAG" --notes-file notes.md
