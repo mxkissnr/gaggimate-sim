@@ -15,6 +15,8 @@ ENV PATH="/opt/pio/bin:${PATH}"
 
 RUN git clone --depth 1 --branch "${GAGGIMATE_REF}" https://github.com/jniebuhr/gaggimate /src
 WORKDIR /src
+# Upstream relies on a transitive <stdexcept> include that GCC 12 does not provide.
+ENV PLATFORMIO_BUILD_FLAGS="-include stdexcept"
 RUN scripts/build_webui.sh && pio run -e display-sim
 
 
