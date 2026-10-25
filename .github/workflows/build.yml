@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
     inputs:
       ref:
-        description: Upstream GaggiMate tag to build (default: latest release)
+        description: "Upstream GaggiMate tag to build (default: latest release)"
         required: false
 
 permissions:
