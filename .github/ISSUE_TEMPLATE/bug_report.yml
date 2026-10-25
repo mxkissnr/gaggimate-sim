@@ -1,0 +1,58 @@
+name: Bug Report
+description: The image does not build, start or behave as documented
+labels: ["bug", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: "Thanks for taking the time to report a bug! This repository only builds the container image. Bugs in the GaggiMate firmware or simulator itself belong in the upstream repository."
+
+  - type: input
+    id: tag
+    attributes:
+      label: Image tag
+      description: The tag you pulled
+      placeholder: "e.g. latest or v1.9.0"
+    validations:
+      required: true
+
+  - type: input
+    id: ref
+    attributes:
+      label: Upstream GaggiMate ref
+      description: "Value of the gaggimate.ref image label (docker inspect)"
+      placeholder: "e.g. v1.9.0"
+
+  - type: textarea
+    id: command
+    attributes:
+      label: docker run command
+      description: The exact command or compose file you used
+      render: shell
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Describe the bug
+      description: What happened? What did you expect to happen?
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Run …
+        2. Open …
+        3. See error
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant logs
+      description: Output of `docker logs <container>`, or the failing build log
+      render: text

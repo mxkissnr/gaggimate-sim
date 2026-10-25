@@ -1,12 +1,27 @@
-# gaggimate-sim
+<p align="center">
+  <a href="https://github.com/mxkissnr/gaggimate-sim/pkgs/container/gaggimate-sim">
+    <img src="https://img.shields.io/github/v/tag/mxkissnr/gaggimate-sim?color=%23f59e0b&label=Image&style=flat-square" alt="Image tag"/>
+  </a>
+  <a href="https://github.com/mxkissnr/gaggimate-sim/actions/workflows/build.yml">
+    <img src="https://img.shields.io/github/actions/workflow/status/mxkissnr/gaggimate-sim/build.yml?branch=main&label=Build&style=flat-square" alt="Build"/>
+  </a>
+  <img src="https://img.shields.io/badge/Image%20licence-CC%20BY--NC--SA%204.0-blue?style=flat-square" alt="Image licence CC BY-NC-SA 4.0"/>
+  <img src="https://img.shields.io/badge/Built%20with-Claude%20by%20Anthropic-D97706?style=flat-square" alt="Built with Claude"/>
+</p>
 
-Container image of the official [GaggiMate](https://github.com/jniebuhr/gaggimate)
-desktop simulator (`display-sim`). It runs the real display firmware natively
-with a mocked controller, renders to a virtual X display and serves the
-embedded web UI. Handy for UI work, screenshots and testing without hardware.
+<h1 align="center">gaggimate-sim</h1>
 
-This repository contains no upstream code: the Dockerfile clones GaggiMate at
-build time.
+<p align="center">
+  Container image of the official <a href="https://github.com/jniebuhr/gaggimate">GaggiMate</a> desktop simulator (<code>display-sim</code>).<br/>
+  It runs the real display firmware natively with a mocked controller, renders to a virtual X display and serves the embedded web UI —<br/>
+  handy for UI work, screenshots and testing without hardware. This repository contains no upstream code: the Dockerfile clones GaggiMate at build time.
+</p>
+
+<p align="center">
+  Part of the <a href="https://github.com/mxkissnr/gaggiuino-local-profiler">GLP ecosystem</a> — used to test GLP against GaggiMate without hardware.
+</p>
+
+---
 
 ## Usage
 
@@ -30,7 +45,8 @@ The last argument is the render delay in milliseconds.
 
 Each tag matches an upstream GaggiMate release tag (for example `v1.9.0`);
 `latest` points to the newest release. The tag is also stored in the
-`gaggimate.ref` image label.
+`gaggimate.ref` image label. Each upstream release also gets a
+GitHub release in this repository.
 
 ## Rebuilds
 
