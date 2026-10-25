@@ -1,1 +1,51 @@
 # gaggimate-sim
+
+Container image of the official [GaggiMate](https://github.com/jniebuhr/gaggimate)
+desktop simulator (`display-sim`). It runs the real display firmware natively
+with a mocked controller, renders to a virtual X display and serves the
+embedded web UI. Handy for UI work, screenshots and testing without hardware.
+
+This repository contains no upstream code: the Dockerfile clones GaggiMate at
+build time.
+
+## Usage
+
+```shell
+docker run -p 8080:8080 -v gaggimate-sim-data:/sim_data ghcr.io/mxkissnr/gaggimate-sim:latest
+```
+
+Open <http://localhost:8080/> for the web UI. Settings, profiles and shot
+history persist in the `/sim_data` volume; remove the volume to start fresh.
+
+The simulator also has a screenshot mode (render briefly, write a BMP, exit):
+
+```shell
+docker run --rm -v "$PWD:/out" ghcr.io/mxkissnr/gaggimate-sim:latest \
+  xvfb-run -a /app/gaggimate-sim --screenshot /out/shot.bmp 4000
+```
+
+The last argument is the render delay in milliseconds.
+
+## Tags
+
+Each tag matches an upstream GaggiMate release tag (for example `v1.9.0`);
+`latest` points to the newest release. The tag is also stored in the
+`gaggimate.ref` image label.
+
+## Rebuilds
+
+The image is rebuilt daily from the latest upstream release. This publishes
+new releases within a day and picks up base-image security fixes. Pull
+requests build and smoke-test the image without pushing. Every build is
+scanned with Trivy and results are uploaded to code scanning.
+
+The workflow can also be started manually with a specific upstream tag.
+
+## Licence and attribution
+
+GaggiMate (c) its authors, <https://github.com/jniebuhr/gaggimate>, licensed
+CC BY-NC-SA 4.0. The image contains a build of that work and is distributed
+under the same licence, non-commercial use only. This repository's own files
+(Dockerfile, workflows) are MIT. See [NOTICE](NOTICE) and [LICENSE](LICENSE).
+
+This project is not affiliated with GaggiMate.
