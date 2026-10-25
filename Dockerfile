@@ -15,8 +15,10 @@ ENV PATH="/opt/pio/bin:${PATH}"
 
 RUN git clone --depth 1 --branch "${GAGGIMATE_REF}" https://github.com/jniebuhr/gaggimate /src
 WORKDIR /src
-# Upstream relies on a transitive <stdexcept> include that GCC 12 does not provide.
-ENV PLATFORMIO_BUILD_FLAGS="-include stdexcept"
+# Upstream is developed on macOS/clang and relies on transitive standard headers that
+# GCC 12 does not provide; force-include them for C++ translation units.
+RUN printf '#ifdef __cplusplus\n#include <stdexcept>\n#include <cstdarg>\n#include <cstdint>\n#include <cstdio>\n#include <cstdlib>\n#include <cstring>\n#include <algorithm>\n#include <string>\n#endif\n' > /opt/compat.h
+ENV PLATFORMIO_BUILD_FLAGS="-include /opt/compat.h"
 # display-sim does not run the version script of the firmware envs, so write src/version.h here.
 RUN printf '#pragma once\n#define BUILD_GIT_VERSION "%s"\n#define BUILD_TIMESTAMP "%s"\n' "${GAGGIMATE_REF}" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > src/version.h \
  && scripts/build_webui.sh && pio run -e display-sim
