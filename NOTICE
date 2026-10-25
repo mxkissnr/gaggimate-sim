@@ -1,0 +1,13 @@
+The container image published from this repository contains a build of
+GaggiMate (https://github.com/jniebuhr/gaggimate), copyright its authors,
+licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0
+International licence (CC BY-NC-SA 4.0):
+https://creativecommons.org/licenses/by-nc-sa/4.0/
+
+The image is built from the unmodified upstream source at the release tag
+recorded in the image label "gaggimate.ref". It is distributed under the same
+licence, for non-commercial use only. This project is not affiliated with or
+endorsed by GaggiMate or its authors.
+
+Only the files in this repository (Dockerfile, workflows, documentation) are
+licensed under the MIT licence, see LICENSE.
